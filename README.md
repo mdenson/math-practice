@@ -5,6 +5,6 @@ A simple webapp for youth math practice in addition, subtraction, and multiplica
 ## TODO:
 
 -   Update to [Material Components for the Web](https://github.com/material-components/material-components-web) since [Material Design Lite](https://github.com/google/material-design-lite) is no longer supported
--   Rearrange operands so that subtraction doesn't give negative results to keep this simple or set as option
--   Option to set num_limit (operand limit)
+-   ~~Rearrange operands so that subtraction doesn't give negative results to keep this simple~~ or set as option
+-   ~~Option to set num_limit (operand limit)~~
 -   Needs to be refactored

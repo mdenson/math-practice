@@ -42,6 +42,11 @@
                 color: #ffffff;
             }
 
+            .my-answer-input {
+                font-size: 56px;
+                text-align: center;
+            }
+
             .my-header .mdl-layout__header-row {
                 padding-left: 40px;
             }
@@ -78,27 +83,31 @@
 
     let numberRight = 0;
     let numberTotal = 0;
-    let num_limit = 100;
+    let num_limit = 10;
     let operands = [0, 0];
 
     let opOptions = [
-        { id: '+', text: 'Addition' },
-        { id: '-', text: 'Subtraction' },
-        { id: 'x', text: 'Multiplication' },
+        { id: '+', text: 'Add' },
+        { id: '-', text: 'Subtract' },
+        { id: 'x', text: 'Multiply' },
     ];
     let currentOp = opOptions[0];
 
     let buttonText = 'Check';
     let userInput = '';
 
+    const rangeButtonHandler = (e) => {
+        if (num_limit >= 1000) num_limit = 10;
+        else num_limit *= 10;
+    };
+
     const operationButtonHandler = (e) => {
         let newOp = findOptionByValue(e.target.textContent);
         if (newOp) currentOp = newOp;
         else console.log('Operation not found! (' + e.target.textContent);
 
-        h = document.querySelector('header');
-        buttons = h.querySelectorAll('button');
-        buttons.forEach((b) => b.classList.remove('my-isactive'));
+        opButtons = document.querySelectorAll('.opbutton');
+        opButtons.forEach((b) => b.classList.remove('my-isactive'));
         e.target.classList.add('my-isactive');
     };
 
@@ -106,7 +115,9 @@
         operands.forEach((n, i) => {
             return (operands[i] = Math.floor(Math.random() * num_limit));
         });
-        operands.sort(); // ascending order
+
+        // ascending order for subtraction so we don't have negative results
+        if (currentOp.id == '-') operands.sort();
     };
 
     const inputInputHandler = (e) => {
@@ -168,10 +179,16 @@
                         m('span.mdl-layout-title', 'Math Practice'),
                         m('div.mdl-layout-spacer'),
                         m('nav.mdl-navigation.mdl-layout--large-screen-only', [
+                            m(
+                                'button.mdl-button mdl-js-button rangebutton',
+                                { onclick: rangeButtonHandler },
+                                'From 0 to ',
+                                num_limit,
+                            ),
                             //m("a.mdl-navigation__link[href='']", 'Link'),
                             opOptions.map((o) => {
                                 let classString =
-                                    'button.mdl-button mdl-js-button';
+                                    'button.mdl-button mdl-js-button opbutton';
                                 if (o == currentOp) {
                                     classString += ' my-isactive';
                                 }
@@ -188,9 +205,16 @@
                 m('div.mdl-layout__drawer', [
                     m('span.mdl-layout-title', 'Math Practice'),
                     m('nav.mdl-navigation', [
+                        m(
+                            'button.mdl-button mdl-js-button rangebutton',
+                            { onclick: rangeButtonHandler },
+                            'From 0 to ',
+                            num_limit,
+                        ),
                         //m("a.mdl-navigation__link[href='']", 'Link'),
                         opOptions.map((o) => {
-                            let classString = 'button.mdl-button mdl-js-button';
+                            let classString =
+                                'button.mdl-button mdl-js-button opbutton';
                             if (o == currentOp) {
                                 classString += ' my-isactive';
                             }
@@ -223,10 +247,8 @@
                                 ),
                                 m('div.mdl-textfield mdl-js-textfield', [
                                     m(
-                                        'input.mdl-textfield__input[type=text]#answer',
+                                        'input.mdl-textfield__input my-answer-input[type=text]',
                                         {
-                                            style:
-                                                'font-size: 56px; text-align: center',
                                             oninput: inputInputHandler,
                                             value: userInput,
                                         },

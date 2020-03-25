@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- Add to homescreen for Chrome on Android -->
+        <meta name="mobile-web-app-capable" content="yes" />
+        <link rel="icon" sizes="192x192" href="images/android-desktop.png" />
+
+        <!-- Add to homescreen for Safari on iOS -->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta
+            name="apple-mobile-web-app-title"
+            content="Material Design Lite"
+        />
+        <link
+            rel="apple-touch-icon-precomposed"
+            href="images/ios-desktop.png"
+        />
+
+        <title>Math Problems</title>
+        <meta name="description" content="HTML template" />
+        <meta name="author" content="Your name here" />
+
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        />
+        <link
+            rel="stylesheet"
+            href="https://code.getmdl.io/1.3.0/material.teal-lime.min.css"
+        />
+        <script
+            defer
+            src="https://code.getmdl.io/1.3.0/material.min.js"
+        ></script>
+        <script src="https://unpkg.com/mithril/mithril.js"></script>
+        <style>
+            .my-isactive {
+                color: #ffffff;
+            }
+
+            .my-header .mdl-layout__header-row {
+                padding-left: 40px;
+            }
+
+            .my-container {
+                max-width: 1600px;
+                width: calc(100% - 16px);
+                margin: 0 auto;
+            }
+
+            .my-content {
+                border-radius: 2px;
+                padding: 80px 56px;
+                margin-bottom: 80px;
+                text-align: center;
+            }
+
+            .my-layout.is-small-screen .my-content {
+                padding: 40px 28px;
+            }
+
+            .my-content h3 {
+                margin-top: 48px;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- content goes here -->
+    </body>
+</html>
+
+<script>
+    let root = document.body;
+
+    let numberRight = 0;
+    let numberTotal = 0;
+    let num_limit = 100;
+
+    let opOptions = [
+        { id: '+', text: 'Addition' },
+        { id: '-', text: 'Subtraction' },
+        { id: 'x', text: 'Multiplication' },
+    ];
+    let currentOp = opOptions[0];
+    let buttonText = 'Check';
+    let userInput = '';
+
+    const operationButtonHandler = (e) => {
+        let newOp = findOptionByValue(e.target.textContent);
+        if (newOp) currentOp = newOp;
+        else console.log('Operation not found! (' + e.target.textContent);
+
+        h = document.querySelector('header');
+        buttons = h.querySelectorAll('button');
+        buttons.forEach((b) => b.classList.remove('my-isactive'));
+        e.target.classList.add('my-isactive');
+    };
+
+    const getNewValues = () => {
+        x = Math.floor(Math.random() * num_limit);
+        y = Math.floor(Math.random() * num_limit);
+    };
+
+    const inputInputHandler = (e) => {
+        userInput = e.target.value;
+    };
+
+    const findOptionById = (e) => {
+        return opOptions.find(({ id }) => id == e.target.value);
+    };
+
+    const findOptionByValue = (val) => {
+        return opOptions.find(({ text }) => text == val);
+    };
+
+    const findOptionIndex = (e) => {
+        let i = 0;
+        return opOptions.find(({ id }) => {
+            i++;
+            if (id == e.target.value) return i;
+            else return -1;
+        });
+    };
+
+    const answerButtonHandler = (e) => {
+        if (buttonText == 'Correct - click to continue') {
+            userInput = '';
+            buttonText = 'Check';
+            getNewValues();
+            return;
+        }
+
+        switch (currentOp.id) {
+            case '+':
+                answer = x + y;
+                break;
+            case '-':
+                answer = x - y;
+                break;
+            case 'x':
+                answer = x * y;
+                break;
+        }
+        if (answer == Number(userInput)) {
+            numberRight++;
+            buttonText = 'Correct - click to continue';
+        } else {
+            numberTotal++;
+            buttonText = 'Try again';
+        }
+    };
+
+    var Question = {
+        oninit: getNewValues,
+        view: function() {
+            return m('div.mdl-layout.mdl-js-layout.mdl-layout--fixed-header', [
+                m(
+                    'header.mdl-layout__header',
+                    m('div.mdl-layout__header-row', [
+                        m('span.mdl-layout-title', 'Math Practice'),
+                        m('div.mdl-layout-spacer'),
+                        m('nav.mdl-navigation.mdl-layout--large-screen-only', [
+                            //m("a.mdl-navigation__link[href='']", 'Link'),
+                            opOptions.map((o) => {
+                                let classString =
+                                    'button.mdl-button mdl-js-button';
+                                if (o == currentOp) {
+                                    classString += ' my-isactive';
+                                }
+
+                                return m(
+                                    classString,
+                                    { onclick: operationButtonHandler },
+                                    o.text,
+                                );
+                            }),
+                        ]),
+                    ]),
+                ),
+                m('div.mdl-layout__drawer', [
+                    m('span.mdl-layout-title', 'Math Practice'),
+                    m('nav.mdl-navigation', [
+                        //m("a.mdl-navigation__link[href='']", 'Link'),
+                        opOptions.map((o) => {
+                            let classString = 'button.mdl-button mdl-js-button';
+                            if (o == currentOp) {
+                                classString += ' my-isactive';
+                            }
+                            return m(
+                                classString,
+                                { onclick: operationButtonHandler },
+                                o.text,
+                            );
+                        }),
+                    ]),
+                ]),
+                m('main.mdl-layout__content', [
+                    //<div class='demo-container mdl-grid'>
+                    m('div.my-container mdl-grid', [
+                        m(
+                            'div.mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone',
+                        ),
+                        //<div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col"></div>
+                        m(
+                            'div.my-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col',
+                            [
+                                m('h3', 'Enter your answer below:'),
+                                m('h1', x + ' ' + currentOp.id + ' ' + y),
+                                m('div.mdl-textfield mdl-js-textfield', [
+                                    m(
+                                        'input.mdl-textfield__input[type=text]#answer',
+                                        {
+                                            style:
+                                                'font-size: 56px; text-align: center',
+                                            oninput: inputInputHandler,
+                                            value: userInput,
+                                        },
+                                    ),
+                                    m(
+                                        'label.mdl-textfield__label[style="text-align: center"]',
+                                        { for: 'answer' },
+                                        'Answer',
+                                    ),
+                                ]),
+                                m('div', [
+                                    m(
+                                        'button.mdl-button mdl-js-button mdl-button--primary',
+                                        {
+                                            onclick: answerButtonHandler,
+                                        },
+                                        buttonText,
+                                    ),
+                                ]),
+                                m('p', numberRight + '/' + numberTotal),
+                            ],
+                        ),
+                    ]),
+                ]),
+            ]);
+        },
+    };
+
+    m.mount(root, Question);
+</script>

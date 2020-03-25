@@ -79,6 +79,7 @@
     let numberRight = 0;
     let numberTotal = 0;
     let num_limit = 100;
+    let operands = [0, 0];
 
     let opOptions = [
         { id: '+', text: 'Addition' },
@@ -86,6 +87,7 @@
         { id: 'x', text: 'Multiplication' },
     ];
     let currentOp = opOptions[0];
+
     let buttonText = 'Check';
     let userInput = '';
 
@@ -101,8 +103,10 @@
     };
 
     const getNewValues = () => {
-        x = Math.floor(Math.random() * num_limit);
-        y = Math.floor(Math.random() * num_limit);
+        operands.forEach((n, i) => {
+            return (operands[i] = Math.floor(Math.random() * num_limit));
+        });
+        operands.sort(); // ascending order
     };
 
     const inputInputHandler = (e) => {
@@ -136,13 +140,13 @@
 
         switch (currentOp.id) {
             case '+':
-                answer = x + y;
+                answer = operands[1] + operands[0];
                 break;
             case '-':
-                answer = x - y;
+                answer = operands[1] - operands[0];
                 break;
             case 'x':
-                answer = x * y;
+                answer = operands[1] * operands[0];
                 break;
         }
         if (answer == Number(userInput)) {
@@ -209,7 +213,14 @@
                             'div.my-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col',
                             [
                                 m('h3', 'Enter your answer below:'),
-                                m('h1', x + ' ' + currentOp.id + ' ' + y),
+                                m(
+                                    'h1',
+                                    operands[1] +
+                                        ' ' +
+                                        currentOp.id +
+                                        ' ' +
+                                        operands[0],
+                                ),
                                 m('div.mdl-textfield mdl-js-textfield', [
                                     m(
                                         'input.mdl-textfield__input[type=text]#answer',

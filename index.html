@@ -106,9 +106,9 @@
         if (newOp) {
             currentOp = newOp;
             if (currentOp.id == '-') operands.sort();
-        else {
+        } else {
             console.log('Operation not found! (' + e.target.textContent);
-        };
+        }
 
         opButtons = document.querySelectorAll('.opbutton');
         opButtons.forEach((b) => b.classList.remove('my-isactive'));
@@ -251,7 +251,7 @@
                                 ),
                                 m('div.mdl-textfield mdl-js-textfield', [
                                     m(
-                                        'input.mdl-textfield__input my-answer-input[type=text]',
+                                        'input.mdl-textfield__input my-answer-input[type=number]',
                                         {
                                             oninput: inputInputHandler,
                                             value: userInput,

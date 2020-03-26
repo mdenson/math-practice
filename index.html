@@ -103,8 +103,12 @@
 
     const operationButtonHandler = (e) => {
         let newOp = findOptionByValue(e.target.textContent);
-        if (newOp) currentOp = newOp;
-        else console.log('Operation not found! (' + e.target.textContent);
+        if (newOp) {
+            currentOp = newOp;
+            if (currentOp.id == '-') operands.sort();
+        else {
+            console.log('Operation not found! (' + e.target.textContent);
+        };
 
         opButtons = document.querySelectorAll('.opbutton');
         opButtons.forEach((b) => b.classList.remove('my-isactive'));

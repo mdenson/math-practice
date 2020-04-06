@@ -100,8 +100,8 @@
         if (num_limit >= 1000) num_limit = 10;
         else num_limit *= 10;
 
-	// get new values given new range
-	getNewValues();
+        // get new values given new range
+        getNewValues();
     };
 
     const operationButtonHandler = (e) => {
@@ -117,7 +117,7 @@
         opButtons.forEach((b) => b.classList.remove('my-isactive'));
         e.target.classList.add('my-isactive');
 
-	getNewValues();
+        getNewValues();
     };
 
     const getNewValues = () => {
@@ -180,7 +180,7 @@
 
     var Question = {
         oninit: getNewValues,
-        view: function() {
+        view: function () {
             return m('div.mdl-layout.mdl-js-layout.mdl-layout--fixed-header', [
                 m(
                     'header.mdl-layout__header',
@@ -284,7 +284,10 @@
                 ]),
                 m('footer.mdl-mini-footer', [
                     m('.mdl-mini-footer__left-section', [
-                        m('.mdl-logo', 'Math Practice'),
+                        m(
+                            'a[href="https://github.com/mdenson/math-practice"].mdl-logo',
+                            'Math Practice',
+                        ),
                     ]),
                     m('.mdl-mini-footer__right-section', [
                         m('ul.mdl-mini-footer__link-list', [

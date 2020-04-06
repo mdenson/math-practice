@@ -99,6 +99,9 @@
     const rangeButtonHandler = (e) => {
         if (num_limit >= 1000) num_limit = 10;
         else num_limit *= 10;
+
+	// get new values given new range
+	getNewValues();
     };
 
     const operationButtonHandler = (e) => {
@@ -113,6 +116,8 @@
         opButtons = document.querySelectorAll('.opbutton');
         opButtons.forEach((b) => b.classList.remove('my-isactive'));
         e.target.classList.add('my-isactive');
+
+	getNewValues();
     };
 
     const getNewValues = () => {
